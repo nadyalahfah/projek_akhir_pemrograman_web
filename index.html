@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TopupGame - Top Up Game Mobile Legends & Game Lainnya</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" onclick="navigateTo('home')">
+                    <i class="fas fa-gamepad"></i>
+                    <span>TopupGame</span>
+                </div>
+                <nav class="nav">
+                    <button class="nav-btn" id="navHome" onclick="navigateTo('home')">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </button>
+                    <button class="nav-btn" id="navHistory" onclick="navigateTo('history')">
+                        <i class="fas fa-history"></i>
+                        <span>Riwayat</span>
+                    </button>
+                    <button class="nav-btn" id="navAccount" onclick="navigateTo('account')">
+                        <i class="fas fa-user"></i>
+                        <span>Akun</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div id="homePage" class="page active">
+                <div id="gameSelectionView" class="view active">
+                    <div class="hero-section">
+                        <h1>Top Up Game Favoritmu</h1>
+                        <p>Proses cepat, aman, dan terpercaya. Berbagai metode pembayaran tersedia.</p>
+                    </div>
+                    <div class="games-grid" id="gamesGrid"></div>
+                </div>
+
+                <div id="productSelectionView" class="view">
+                    <div class="back-header">
+                        <button class="back-btn" onclick="showGameSelection()">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <div>
+                            <h2 id="productGameName"></h2>
+                            <p id="productGameCurrency"></p>
+                        </div>
+                    </div>
+                    <div class="products-grid" id="productsGrid"></div>
+                </div>
+
+                <div id="orderFormView" class="view">
+                    <div class="back-header">
+                        <button class="back-btn" onclick="showProductSelection()">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <div>
+                            <h2>Detail Pesanan</h2>
+                            <p>Lengkapi data untuk melanjutkan</p>
+                        </div>
+                    </div>
+
+                    <div class="order-layout">
+                        <div class="order-form-section">
+                            <div class="card">
+                                <h3>Data Akun Game</h3>
+                                <form id="orderForm">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="userId">User ID</label>
+                                            <input type="text" id="userId" placeholder="Masukkan User ID" required>
+                                        </div>
+                                        <div class="form-group" id="serverIdGroup" style="display: none;">
+                                            <label for="serverId">Server ID / Zone ID</label>
+                                            <input type="text" id="serverId" placeholder="Masukkan Server ID">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="whatsapp">Nomor WhatsApp</label>
+                                        <input type="tel" id="whatsapp" placeholder="08xxxxxxxxxx" required>
+                                        <small>Untuk konfirmasi pesanan</small>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header-icon">
+                                    <i class="fas fa-wallet"></i>
+                                    <h3>Metode Pembayaran</h3>
+                                </div>
+                                <div class="payment-methods" id="paymentMethods"></div>
+                            </div>
+                        </div>
+
+                        <div class="order-summary-section">
+                            <div class="card sticky">
+                                <h3>Ringkasan Pesanan</h3>
+                                <div class="summary-content">
+                                    <div class="summary-item">
+                                        <div class="summary-label">Game</div>
+                                        <div class="summary-value" id="summaryGame"></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Item</div>
+                                        <div class="summary-value" id="summaryItem"></div>
+                                    </div>
+                                    <div class="separator"></div>
+                                    <div class="summary-item">
+                                        <span>Harga</span>
+                                        <span id="summaryPrice"></span>
+                                    </div>
+                                    <div class="summary-item" id="summaryFeeRow" style="display: none;">
+                                        <span>Biaya Admin</span>
+                                        <span id="summaryFee"></span>
+                                    </div>
+                                    <div class="separator"></div>
+                                    <div class="summary-item total">
+                                        <span>Total</span>
+                                        <span id="summaryTotal"></span>
+                                    </div>
+                                    <button class="btn-primary" id="submitOrderBtn" onclick="showConfirmationDialog()">
+                                        <i class="fas fa-check-circle"></i>
+                                        Buat Pesanan
+                                    </button>
+                                    <p class="disclaimer">
+                                        Dengan melanjutkan, Anda menyetujui syarat dan ketentuan kami
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="accountPage" class="page">
+                <div class="page-hero">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo" id="profilePhoto">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <button class="edit-photo-btn" id="editPhotoBtn" onclick="document.getElementById('photoInput').click()">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                        <input type="file" id="photoInput" accept="image/*" style="display: none;" onchange="uploadProfilePhoto(event)">
+                    </div>
+                    <h1>Profil Akun</h1>
+                    <p>Kelola informasi profil Anda</p>
+                </div>
+
+                <div class="max-w-2xl">
+                    <div class="card">
+                        <div id="profileViewMode">
+                            <div class="profile-info-grid">
+                                <div class="profile-info-item">
+                                    <div class="profile-info-label">
+                                        <i class="fas fa-user"></i>
+                                        Nama Lengkap
+                                    </div>
+                                    <div class="profile-info-value" id="displayName">-</div>
+                                </div>
+                                <div class="profile-info-item">
+                                    <div class="profile-info-label">
+                                        <i class="fas fa-envelope"></i>
+                                        Email
+                                    </div>
+                                    <div class="profile-info-value" id="displayEmail">-</div>
+                                </div>
+                                <div class="profile-info-item">
+                                    <div class="profile-info-label">
+                                        <i class="fas fa-phone"></i>
+                                        Nomor HP
+                                    </div>
+                                    <div class="profile-info-value" id="displayPhone">-</div>
+                                </div>
+                            </div>
+                            <button class="btn-primary" onclick="toggleEditMode(true)">
+                                <i class="fas fa-edit"></i>
+                                Edit Profil
+                            </button>
+                        </div>
+
+                        <div id="profileEditMode" style="display: none;">
+                            <form id="accountForm">
+                                <div class="form-group">
+                                    <label for="profileName">
+                                        <i class="fas fa-user"></i>
+                                        Nama Lengkap
+                                    </label>
+                                    <input type="text" id="profileName" placeholder="Masukkan nama lengkap">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileEmail">
+                                        <i class="fas fa-envelope"></i>
+                                        Email
+                                    </label>
+                                    <input type="email" id="profileEmail" placeholder="contoh@email.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profilePhone">
+                                        <i class="fas fa-phone"></i>
+                                        Nomor HP
+                                    </label>
+                                    <input type="tel" id="profilePhone" placeholder="08xxxxxxxxxx">
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" class="btn-secondary" onclick="toggleEditMode(false)">
+                                        <i class="fas fa-times"></i>
+                                        Batal
+                                    </button>
+                                    <button type="button" class="btn-primary" onclick="saveProfile()">
+                                        <i class="fas fa-save"></i>
+                                        Simpan Perubahan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Informasi Akun</h3>
+                        <div class="info-list">
+                            <div class="info-item">
+                                <span>Status Akun</span>
+                                <span class="status-active">Aktif</span>
+                            </div>
+                            <div class="info-item">
+                                <span>Member Sejak</span>
+                                <span>November 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="historyPage" class="page">
+                <div class="page-hero">
+                    <div class="page-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <h1>Riwayat Transaksi</h1>
+                    <p>Lihat semua transaksi Anda</p>
+                </div>
+
+                <div class="max-w-4xl">
+                    <div id="transactionsList"></div>
+                    <div id="emptyTransactions" class="card empty-state" style="display: none;">
+                        <i class="fas fa-receipt"></i>
+                        <p>Belum ada transaksi</p>
+                        <small>Transaksi Anda akan muncul di sini</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="confirmationDialog" class="dialog-overlay">
+        <div class="dialog">
+            <div class="dialog-header">
+                <h2>
+                    <i class="fas fa-receipt"></i>
+                    Konfirmasi Pesanan
+                </h2>
+                <p>Pastikan detail pesanan Anda sudah benar</p>
+            </div>
+            <div class="dialog-content">
+                <div class="confirmation-details" id="confirmationDetails"></div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn-secondary" onclick="closeConfirmationDialog()">Batal</button>
+                <button class="btn-primary" onclick="confirmOrder()">
+                    <i class="fas fa-check-circle"></i>
+                    Konfirmasi & Bayar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="successDialog" class="dialog-overlay">
+        <div class="dialog success-dialog">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="dialog-header">
+                <h2>Pesanan Berhasil!</h2>
+                <p>Transaksi Anda sedang diproses</p>
+            </div>
+            <div class="dialog-content">
+                <div class="success-details" id="successDetails"></div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn-primary" onclick="closeSuccessDialog()">
+                    <i class="fas fa-home"></i>
+                    Kembali ke Beranda
+                </button>
+                <button class="btn-secondary" onclick="viewTransactionHistory()">
+                    <i class="fas fa-history"></i>
+                    Lihat Riwayat
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
